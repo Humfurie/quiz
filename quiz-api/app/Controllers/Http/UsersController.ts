@@ -4,18 +4,20 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import jwt from 'jsonwebtoken'
 import env from '@ioc:Adonis/Core/Env'
-import hash from 'Config/hash'
 
 export default class UsersController {
   public async index({ }: HttpContextContract) { }
 
   public async create({ request, response }: HttpContextContract) {
     const validated = await request.validate(UserValidator)
+    console.log(validated)
     await User.create({
       fullname: validated.fullname,
       email: validated.email,
       password: validated.password
     })
+
+    console.log(validated)
 
     const user = await User.query().where('email', validated.email).first()
     const tokenAuth = {
@@ -51,7 +53,7 @@ export default class UsersController {
     const password = request.input('password')
 
     const user = await User.query().where('email', email).first()
-
+  
     const tokenAuth = {
       email: user?.email
     }
@@ -61,7 +63,7 @@ export default class UsersController {
     }
 
     if (!await Hash.verify(user.password, password)) {
-      const token = jwt.sign(tokenAuth, env.get('App_Secret'), { expiresIn: "30 mins" })
+      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
       let jwtCookie = `JWT=${token}; Domain=${"localhost"}`
 
       if (request.input('remember')) {
