@@ -1,22 +1,23 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import jwt from 'jsonwebtoken'
+import env from '@ioc:Adonis/Core/Env'
 
 export default class User {
   public async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {
     // code for middleware goes here. ABOVE THE NEXT CALL
-    request.headers
-    // try {
-    //   const token = request.headers['authorization'].split(" ")[1]
 
-    //   if (!token) return response.status(401).json({ message: "Unauthorize Access!" })
+    try {
+      const token = request.headers().authorization?.split(" ")[1]
 
-    //   jwt.verify(token, process.env.APP_SECRET, (err, token) => {
-    //     if (err) response.status(403).json({message: "token is not valid"})
-    //     req
-    //   })
-    // } catch (error) {
-    //   return response.status(401).json({ message: "Unauthorized Access!" })
-    // }
+      if (!token) return response.status(401).json({ message: "Unauthorize Access!" })
+
+    const decode = jwt.verify(token, env.get('APP_SECRET'), {})
+
+    request.user = decode
+
+    } catch (error) {
+      return response.status(401).json({ message: "Unauthorized Access!" })
+    }
     await next()
   }
 }

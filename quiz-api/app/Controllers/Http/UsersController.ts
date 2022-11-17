@@ -23,22 +23,21 @@ export default class UsersController {
     const tokenAuth = {
       email: validated.email
     }
+    // if (!user) {
+    //   return response.status(401).json({ message: 'Unauthorized User!' })
+    // }
 
-    if (!user) {
-      return response.status(401).json({ message: 'Unauthorized User!' })
-    }
-
-    if (!await Hash.verify(user.password, validated.password)) {
-      return response.status(401).json({ message: 'Unauthorized User!' })
-    }
+    // if (!await Hash.verify(user.password, validated.password)) {
+    //   return response.status(401).json({ message: 'Unauthorized User!' })
+    // }
 
     try {
-      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { espiresIn: "30 mins" })
-      let jwtCookie = `JWT=${token}; Domain=${"localhost"};`
+      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
+      // let jwtCookie = `JWT=${token}; Domain=${"localhost"};`
 
-      if (request.input('remember')) {
-        jwtCookie = `${jwtCookie} Max-Age=31536000;`
-      }
+      // // if (request.input('remember')) {
+      //   jwtCookie = `${jwtCookie} Max-Age=31536000;`
+      // // }
       return response.status(200).send({
         token: token,
         data: { ...user }
@@ -53,31 +52,40 @@ export default class UsersController {
     const password = request.input('password')
 
     const user = await User.query().where('email', email).first()
-  
+
     const tokenAuth = {
       email: user?.email
     }
-
     if (!user) {
       return response.status(401).json({ message: 'user not found' })
     }
-
+    
     if (!await Hash.verify(user.password, password)) {
-      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
-      let jwtCookie = `JWT=${token}; Domain=${"localhost"}`
-
-      if (request.input('remember')) {
-        jwtCookie = `${jwtCookie} Max-Age=361560000`
-      }
-      return response.status(200).send({
-        token: token,
-        data: { ...user }
-      })
+      return response.status(401).json({message: 'Unauthorized!'})
     }
-  }
-
-  public async show({ }: HttpContextContract) { }
-
+    
+    try{
+      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
+      // let jwtCookie = `JWT=${token}; Domain=${"localhost"}`
+      
+      // if (request.input('remember')) {
+        //   jwtCookie = `${jwtCookie} Max-Age=361560000`
+        // }
+        return response.status(200).send({
+          token: token,
+          data: { ...user }
+        })
+      }
+      catch{
+        return response.redirect().back()
+      }
+    }
+    
+    public async invoke({ request, response }: HttpContextContract) {
+      
+      return response.status(200).json({user: request.user})
+    }
+    
   public async edit({ }: HttpContextContract) { }
 
   public async update({ }: HttpContextContract) { }
