@@ -7,6 +7,9 @@ export default class Answer extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public questionId: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

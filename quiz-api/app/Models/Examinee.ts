@@ -1,11 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
-import User from './User'
+import { BaseModel, column, HasOne, hasOne, } from '@ioc:Adonis/Lucid/Orm'
+import Response from './Response'
 
 export default class Examinee extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public userId: number
+
+  @column()
+  public quizId: number
+  
   @column()
   public score: number
 
@@ -15,6 +21,6 @@ export default class Examinee extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  @hasOne(() => Response)
+  public response: HasOne<typeof Response>
 }

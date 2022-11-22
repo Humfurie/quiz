@@ -7,14 +7,19 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-      .integer('user_id')
-      .unsigned()
-      .references('users.id')
-      .onDelete('CASCADE')// delete post when user is deleted
+        .integer('user_id')
+        .nullable()
+        .unsigned()
+      // table
+      //   .foreign('user_id')
+        .references('users.id')
+        .onDelete('CASCADE')// delete post when user is deleted
       table
-      .integer('quiz_id')
-      .unsigned()
-      .references('quizzes.id')
+        .integer('quiz_id')
+        .unsigned()
+      // table
+      //   .foreign('quiz_id')
+        .references('quizzes.id')
       table.integer('score', 255)
 
 

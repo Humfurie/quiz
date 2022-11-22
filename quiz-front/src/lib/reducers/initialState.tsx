@@ -1,4 +1,5 @@
 export const initialState = {
-    setLoginModal: false,
-    setRegisterModal: false
+    loginModal: false,
+    registerModal: false,
+    quizModal: false,
 }

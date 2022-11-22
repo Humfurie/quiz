@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import 'App/Routes/userRoutes'
+import 'App/Routes/quizRoutes'
 
 Route.get('/', async () => {
   return { hello: 'world' }
