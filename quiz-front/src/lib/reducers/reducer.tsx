@@ -19,6 +19,19 @@ export const reducer = (state: any, action: any) => {
         case ACTIONS.CLOSE_QUIZ_MODAL: {
             return { ...state, quizModal: false }
         }
+        case ACTIONS.ADD_QUESTION: {
+            return {...state }
+        }
+        case ACTIONS.QUIZ_CHANGE: {
+            return { ...state, changeQuiz: action.quiz }
+        }
+        case ACTIONS.QUESTION_CHANGE: {
+            return { ...state, changeQuestion: action.question }
+        }
+        case ACTIONS.CHOICE_CHANGE: {
+
+            return { ...state, changeChoice: action.choice }
+        }
         default:
             return { ...state }
     }

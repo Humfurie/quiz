@@ -1,12 +1,13 @@
 import { Input } from "../partials/input"
 
-export const QuizQuestion = () => {
+export const QuizQuestion = ({ question }: any) => {
 
     return (
         <>
             <div>
-                <Input />
-                hawhaw
+                <Input onChange={(e:any) => {
+
+                }}/>
             </div>
             <div>
 
