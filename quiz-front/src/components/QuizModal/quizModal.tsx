@@ -9,7 +9,7 @@ import { QuizQuestion } from './quizQuestion';
 export const QuizModal = () => {
   const { state, dispatch } = useContext(FormContext)
 
-  console.log(state)
+  console.log(state.questions, 'state')
   return (
     <>
       <Modal
@@ -27,39 +27,43 @@ export const QuizModal = () => {
 
           <div>
             <div>
+              quiz
                 <Input value={state.addQuiz.title} onChange={(e: any) => {
                   dispatch({
-                    type: ACTIONS.QUIZ_CHANGE,
+                    type: ACTIONS.ADD_QUIZ,
                     quiz: e.target.value
                   })
                 }} />
                 <div>
-                  {state.addQuiz.questions.map((question: any, qIdx: number) => {
+                  question
+                  {state.questions.map((question: any, qIdx: number) => {
+                    // console.log(question, 'patay')
                     return (
-
                       <div>
                         <Input value={question.title} onChange={(e: any) => {
                           dispatch({
-                            type: ACTIONS.QUESTION_CHANGE,
-                            question: e.target.value
+                            type: ACTIONS.EDIT_QUESTION,
+                            question: e.target.value,
+                            qIdx: qIdx
                           })
                         }} />
-
-                        <div key={qIdx}>
-                          {question.choice.map((choice: any, cIdx: number) => {
+                        <div key={qIdx}> 
+                        choice                                         
+                          {/* {question.choice.map((choice: any, cIdx: number) => {
                             return (
-
                               <div key={cIdx}>
                                 <Input value={choice.title} onChange={(e: any) => {
                                   dispatch({
-                                    type: ACTIONS.CHOICE_CHANGE,
-                                    choice: e.target.value
+                                    type: ACTIONS.EDIT_CHOICE,
+                                    choice: e.target.value,
+                                    cIdx: cIdx,
+                                    qIdx: qIdx
                                   })
                                 }} />
                               </div>
 
                             )
-                          })}
+                          })} */}
                         </div>
                       </div>
                     )
@@ -71,7 +75,7 @@ export const QuizModal = () => {
 
           <MyButton label="Quiz" onClick={(e: any) => {
             dispatch({
-              type: ACTIONS.ADD_QUESTION
+              type: ACTIONS.INITIAL_QUESTION
             })
           }} />
 

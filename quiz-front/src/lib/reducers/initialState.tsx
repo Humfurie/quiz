@@ -1,24 +1,20 @@
 export const initialState = {
+    //booleans
     loginModal: false,
     registerModal: false,
     quizModal: false,
+    //state
     addQuiz: {
         title: 'onetwothree',
         status: true,
-        questions: [{
-            title: '',
-            choice: [{
-                title: '',
-                answer: true
-            },
-            {
-                title: '',
-                answer: false
-            }]
-        }]
     },
-    //inputs
-    changeQuiz: '',
-    changeQuestion: '',
-    changeChoice: ''
+    questions: [{
+        title: 'fourfivesix',
+        choice: [{
+            title: 'seveneightnine',
+            answer: true
+        },
+    ],
+    }],
+   
 }

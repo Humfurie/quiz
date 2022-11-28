@@ -6,8 +6,8 @@ export const ACTIONS = {
     CLOSE_REGISTER_MODAL: 'close_register_modal',
     OPEN_QUIZ_MODAL: 'open_quiz_modal',
     CLOSE_QUIZ_MODAL: 'close_quiz_modal',
-    ADD_QUESTION: 'add_question',
-    QUIZ_CHANGE: 'quiz_change',
-    QUESTION_CHANGE: 'question_change',
-    CHOICE_CHANGE: 'choice_change'
+    ADD_QUIZ: 'add_quiz',
+    EDIT_QUESTION: 'edit_question',
+    INITIAL_QUESTION: 'initial_question',
+    EDIT_CHOICE: 'edit_choice'
 }

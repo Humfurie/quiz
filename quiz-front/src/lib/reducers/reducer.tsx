@@ -19,19 +19,49 @@ export const reducer = (state: any, action: any) => {
         case ACTIONS.CLOSE_QUIZ_MODAL: {
             return { ...state, quizModal: false }
         }
-        case ACTIONS.ADD_QUESTION: {
-            return {...state }
+        case ACTIONS.ADD_QUIZ: {
+            return {
+                ...state, addQuiz: {
+                    title: action.quiz,
+                    status: true
+                }
+            }
         }
-        case ACTIONS.QUIZ_CHANGE: {
-            return { ...state, changeQuiz: action.quiz }
+        case ACTIONS.INITIAL_QUESTION: {
+            return {
+                ...state, questions: [...state.questions, {
+                    title: '',
+                    choice: [{
+                        title: '',
+                        answer: true
+                    }]
+                }]
+            }
         }
-        case ACTIONS.QUESTION_CHANGE: {
-            return { ...state, changeQuestion: action.question }
-        }
-        case ACTIONS.CHOICE_CHANGE: {
+        case ACTIONS.EDIT_QUESTION: {
+            const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
 
-            return { ...state, changeChoice: action.choice }
+            console.log(state, action.cIdx, 'hawhaw')
+            const newQuestion = state.questions
+
+            questionState.title = action.question
+
+
+            newQuestion[action.qIdx] = { title: questionState.title }
+            return {
+                ...state, questions: newQuestion
+            }
         }
+        case ACTIONS.EDIT_CHOICE: {
+            state.questions.map
+            const choiceState = state.questions.choice.find((choice: any, id: number) => id === action.cIdx)
+            console.log(choiceState, 'hawhawdekarabbaw')
+            const newChoice = state.questions.choice
+            choiceState.title = action.choice
+            newChoice[action.cIdx] = { title: choiceState.title, answer: choiceState.answer }
+            return { ...state, questions: [...state.questions, { choice: newChoice}] }
+        }
+
         default:
             return { ...state }
     }
