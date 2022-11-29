@@ -9,7 +9,7 @@ import { QuizQuestion } from './quizQuestion';
 export const QuizModal = () => {
   const { state, dispatch } = useContext(FormContext)
 
-  console.log(state.questions, 'state')
+  // console.log(state.questions, 'question state')
   return (
     <>
       <Modal
@@ -37,7 +37,6 @@ export const QuizModal = () => {
                 <div>
                   question
                   {state.questions.map((question: any, qIdx: number) => {
-                    // console.log(question, 'patay')
                     return (
                       <div>
                         <Input value={question.title} onChange={(e: any) => {
@@ -49,7 +48,7 @@ export const QuizModal = () => {
                         }} />
                         <div key={qIdx}> 
                         choice                                         
-                          {/* {question.choice.map((choice: any, cIdx: number) => {
+                          {question.choice.map((choice: any, cIdx: number) => {
                             return (
                               <div key={cIdx}>
                                 <Input value={choice.title} onChange={(e: any) => {
@@ -60,10 +59,17 @@ export const QuizModal = () => {
                                     qIdx: qIdx
                                   })
                                 }} />
+                                <MyButton label='add' onClick={(e: any) => {
+                                  dispatch({
+                                    type: ACTIONS.CHOICE_BUTTON,
+                                    qIdx: qIdx,
+                                    cIdx: cIdx
+                                  })
+                                }} />
                               </div>
 
                             )
-                          })} */}
+                          })}
                         </div>
                       </div>
                     )

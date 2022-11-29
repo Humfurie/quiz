@@ -40,28 +40,37 @@ export const reducer = (state: any, action: any) => {
         }
         case ACTIONS.EDIT_QUESTION: {
             const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
-
-            console.log(state, action.cIdx, 'hawhaw')
             const newQuestion = state.questions
-
             questionState.title = action.question
-
-
-            newQuestion[action.qIdx] = { title: questionState.title }
+            newQuestion[action.qIdx] = { title: questionState.title, choice: questionState.choice }
             return {
-                ...state, questions: newQuestion
+                ...state,
             }
         }
         case ACTIONS.EDIT_CHOICE: {
-            state.questions.map
-            const choiceState = state.questions.choice.find((choice: any, id: number) => id === action.cIdx)
-            console.log(choiceState, 'hawhawdekarabbaw')
-            const newChoice = state.questions.choice
+            const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
+            const choiceState = questionState.choice.find((choice: any, id: number) => id === action.cIdx)
+            const newChoice = questionState.choice
+            // console.log(newChoice, 'newChoice')
+            // console.log(choiceState, 'choiceState')
             choiceState.title = action.choice
             newChoice[action.cIdx] = { title: choiceState.title, answer: choiceState.answer }
-            return { ...state, questions: [...state.questions, { choice: newChoice}] }
+            return {
+                ...state,
+                // return { ...state }
+            }
         }
-
+        case ACTIONS.CHOICE_BUTTON: {
+            const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
+            // const choiceState = questionState.choice.find((choice: any, id: number) => id === action.cIdx)
+            // const newChoice = questionState.choice
+            questionState.choice = { title: '', answer: true}
+            console.log(questionState, action.qIdx, 'questionState')
+            // console.log(choiceState, action.cIdx, 'choiceState')
+            return {
+                ...state
+            }
+        }
         default:
             return { ...state }
     }
