@@ -9,7 +9,7 @@ import { QuizQuestion } from './quizQuestion';
 export const QuizModal = () => {
   const { state, dispatch } = useContext(FormContext)
 
-  // console.log(state.questions, 'question state')
+  console.log(state.questions, 'question state')
   return (
     <>
       <Modal
@@ -28,55 +28,56 @@ export const QuizModal = () => {
           <div>
             <div>
               quiz
-                <Input value={state.addQuiz.title} onChange={(e: any) => {
-                  dispatch({
-                    type: ACTIONS.ADD_QUIZ,
-                    quiz: e.target.value
-                  })
-                }} />
-                <div>
-                  question
-                  {state.questions.map((question: any, qIdx: number) => {
-                    return (
-                      <div>
-                        <Input value={question.title} onChange={(e: any) => {
-                          dispatch({
-                            type: ACTIONS.EDIT_QUESTION,
-                            question: e.target.value,
-                            qIdx: qIdx
-                          })
-                        }} />
-                        <div key={qIdx}> 
-                        choice                                         
-                          {question.choice.map((choice: any, cIdx: number) => {
-                            return (
-                              <div key={cIdx}>
-                                <Input value={choice.title} onChange={(e: any) => {
-                                  dispatch({
-                                    type: ACTIONS.EDIT_CHOICE,
-                                    choice: e.target.value,
-                                    cIdx: cIdx,
-                                    qIdx: qIdx
-                                  })
-                                }} />
-                                <MyButton label='add' onClick={(e: any) => {
-                                  dispatch({
-                                    type: ACTIONS.CHOICE_BUTTON,
-                                    qIdx: qIdx,
-                                    cIdx: cIdx
-                                  })
-                                }} />
-                              </div>
+              <Input value={state.addQuiz.title} onChange={(e: any) => {
+                dispatch({
+                  type: ACTIONS.ADD_QUIZ,
+                  quiz: e.target.value
+                })
+              }} />
+              <div>
 
-                            )
-                          })}
-                        </div>
+                {state.questions.map((question: any, qIdx: number) => {
+                  return (
+                    <div key={qIdx}>
+                      question
+                      <Input value={question.title} onChange={(e: any) => {
+                        dispatch({
+                          type: ACTIONS.EDIT_QUESTION,
+                          question: e.target.value,
+                          qIdx: qIdx
+                        })
+                      }} />
+                      <div >
+                        {question.choice.map((choice: any, cIdx: number) => {
+                          return (
+                            <div key={cIdx}>
+                              choice
+                              <Input value={choice.title} onChange={(e: any) => {
+                                dispatch({
+                                  type: ACTIONS.EDIT_CHOICE,
+                                  choice: e.target.value,
+                                  cIdx: cIdx,
+                                  qIdx: qIdx
+                                })
+                              }} />
+                              <MyButton label='add' onClick={(e: any) => {
+                                dispatch({
+                                  type: ACTIONS.CHOICE_BUTTON,
+                                  qIdx: qIdx,
+                                  cIdx: cIdx
+                                })
+                              }} />
+                            </div>
+
+                          )
+                        })}
                       </div>
-                    )
-                  })}
-                </div>
+                    </div>
+                  )
+                })}
               </div>
-            
+            </div>
+
           </div>
 
           <MyButton label="Quiz" onClick={(e: any) => {

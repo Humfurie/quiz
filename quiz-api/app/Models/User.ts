@@ -4,6 +4,9 @@ import { column, beforeSave, BaseModel, hasOne, HasOne } from '@ioc:Adonis/Lucid
 import Examinee from './Examinee'
 
 export default class User extends BaseModel {
+  static related() {
+    throw new Error('Method not implemented.')
+  }
   @column({ isPrimary: true })
   public id: number
 

@@ -4,7 +4,10 @@ import Choice from 'App/Models/Choice'
 import Quiz from 'App/Models/Quiz'
 
 export default class QuizzesController {
-  public async index({ }: HttpContextContract) { }
+  public async index({ response }: HttpContextContract) {
+    const quizzes = await Quiz.query().preload('question' , (q) => q.preload('choice'))
+    return response.status(200).json(quizzes)
+   }
 
   public async create({ }: HttpContextContract) { }
 
@@ -29,7 +32,6 @@ export default class QuizzesController {
 
       const savedQuestions = serializedQuiz.question
       savedQuestions.map(async (question: { id: any }, i: string | number) => {
-        console.log(question, 'questionahoighaiowfho')
 
         const choices = questions[i].choice
         const arrayChoices = choices.map((choice: { title: any }, i: any) => {
@@ -42,7 +44,6 @@ export default class QuizzesController {
 
       })
 
-      // await quiz.refresh()
      const res = await Quiz.query().preload('question' , (q) => q.preload('choice'))
 
       await trx.commit()
@@ -54,7 +55,11 @@ export default class QuizzesController {
 
   }
 
-  public async show({ }: HttpContextContract) { }
+  public async show({ response }: HttpContextContract) { 
+    const getQuiz = await Quiz.query().preload('question' , (q) => q.preload('choice'))
+    console.log(getQuiz)
+    return response.status(200).json(getQuiz)
+  }
 
   public async edit({ }: HttpContextContract) { }
 

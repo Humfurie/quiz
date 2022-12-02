@@ -43,32 +43,25 @@ export const reducer = (state: any, action: any) => {
             const newQuestion = state.questions
             questionState.title = action.question
             newQuestion[action.qIdx] = { title: questionState.title, choice: questionState.choice }
-            return {
-                ...state,
-            }
+            return { ...state, }
         }
         case ACTIONS.EDIT_CHOICE: {
             const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
             const choiceState = questionState.choice.find((choice: any, id: number) => id === action.cIdx)
             const newChoice = questionState.choice
-            // console.log(newChoice, 'newChoice')
-            // console.log(choiceState, 'choiceState')
+            console.log(newChoice, 'newChoice')
+            console.log(choiceState, 'choiceState')
             choiceState.title = action.choice
             newChoice[action.cIdx] = { title: choiceState.title, answer: choiceState.answer }
-            return {
-                ...state,
-                // return { ...state }
-            }
+            return { ...state }
         }
         case ACTIONS.CHOICE_BUTTON: {
-            const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
-            // const choiceState = questionState.choice.find((choice: any, id: number) => id === action.cIdx)
-            // const newChoice = questionState.choice
-            // questionState.choice = { title: '', answer: true}
-            console.log(questionState, action.qIdx, 'questionState')
-            // console.log(choiceState, action.cIdx, 'choiceState')
+            const newTitle = state.questions[action.qIdx].title
+            const newChoice = state.questions[action.qIdx].choice
+            state.questions[action.qIdx] = {title: newTitle, choice:[...newChoice, {title:'', answer: false} ]}
+            console.log(state.questions[action.qIdx], 'question choice' ,action.qIdx)
             return {
-                ...state, question: [...questionState]
+                ...state,
             }
         }
         default:

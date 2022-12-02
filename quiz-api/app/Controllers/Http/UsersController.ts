@@ -4,20 +4,22 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import jwt from 'jsonwebtoken'
 import env from '@ioc:Adonis/Core/Env'
+import Database from '@ioc:Adonis/Lucid/Database'
 
 export default class UsersController {
   public async index({ }: HttpContextContract) { }
 
   public async create({ request, response }: HttpContextContract) {
     const validated = await request.validate(UserValidator)
-    console.log(validated)
+
+    const trx = await Database.transaction()
+
     await User.create({
       fullname: validated.fullname,
       email: validated.email,
       password: validated.password
-    })
+    }, { client: trx })
 
-    console.log(validated)
 
     const user = await User.query().where('email', validated.email).first()
     const tokenAuth = {
@@ -38,6 +40,9 @@ export default class UsersController {
       // // if (request.input('remember')) {
       //   jwtCookie = `${jwtCookie} Max-Age=31536000;`
       // // }
+
+      await trx.commit()
+
       return response.status(200).send({
         token: token,
         data: { ...user }
@@ -59,33 +64,33 @@ export default class UsersController {
     if (!user) {
       return response.status(401).json({ message: 'user not found' })
     }
-    
+
     if (!await Hash.verify(user.password, password)) {
-      return response.status(401).json({message: 'Unauthorized!'})
+      return response.status(401).json({ message: 'Unauthorized!' })
     }
-    
-    try{
+
+    try {
       const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
       // let jwtCookie = `JWT=${token}; Domain=${"localhost"}`
-      
+
       // if (request.input('remember')) {
-        //   jwtCookie = `${jwtCookie} Max-Age=361560000`
-        // }
-        return response.status(200).send({
-          token: token,
-          data: { ...user }
-        })
-      }
-      catch{
-        return response.redirect().back()
-      }
+      //   jwtCookie = `${jwtCookie} Max-Age=361560000`
+      // }
+      return response.status(200).send({
+        token: token,
+        data: { ...user }
+      })
     }
-    
-    public async invoke({ request, response }: HttpContextContract) {
-      
-      return response.status(200).json({user: request.user})
+    catch {
+      return response.redirect().back()
     }
-    
+  }
+
+  public async invoke({ request, response }: HttpContextContract) {
+
+    return response.status(200).json({ user: request.user })
+  }
+
   public async edit({ }: HttpContextContract) { }
 
   public async update({ }: HttpContextContract) { }
