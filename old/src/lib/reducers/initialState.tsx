@@ -3,16 +3,17 @@ export const initialState = {
     loginModal: false,
     registerModal: false,
     quizModal: false,
+    answerModal: false,
     //state
     addQuiz: {
-        title: 'onetwothree',
-        status: true,
+        title: '',
+        status: false,
     },
     questions: [{
-        title: 'fourfivesix',
+        title: '',
         choice: [{
-            title: 'seveneightnine',
-            answer: true
+            title: '',
+            answer: false
         },
         ],
     }],

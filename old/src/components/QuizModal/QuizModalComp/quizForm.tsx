@@ -6,7 +6,7 @@ import { Input } from "../../partials/input"
 
 export const QuizForm = () => {
   const { state, dispatch, dataSubmit } = useContext(FormContext)
-
+  
   return (
     <form onSubmit={dataSubmit}>
 
@@ -25,7 +25,7 @@ export const QuizForm = () => {
             <div key={qIdx}>
 
               question
-              <Input value={question.title} onChange={(e: any) => {
+              <Input value={question.title} questionKey={qIdx} onChange={(e: any) => {
                 dispatch({
                   type: ACTIONS.EDIT_QUESTION,
                   question: e.target.value,
@@ -41,6 +41,7 @@ export const QuizForm = () => {
                   <div key={cIdx}>
 
                     choice
+                  <div>
 
                     <Input value={choice.title} onChange={(e: any) => {
                       dispatch({
@@ -50,7 +51,15 @@ export const QuizForm = () => {
                         qIdx: qIdx
                       })
                     }} />
-
+                    <Input type='checkbox' checked={choice.answer} onChange={(e:any) => {
+                      dispatch({
+                        type: ACTIONS.ANSWER,
+                        qIdx: qIdx,
+                        cIdx: cIdx,
+                        payload: e.target.checked
+                      })
+                    }} />
+                    </div>
                     <MyButton type='button' label='add' choiceKey={cIdx} onClick={(e: any) => {
                       dispatch({
                         type: ACTIONS.CHOICE_BUTTON,

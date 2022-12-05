@@ -33,7 +33,7 @@ export const reducer = (state: any, action: any) => {
                     title: '',
                     choice: [{
                         title: '',
-                        answer: true
+                        answer: false
                     }]
                 }]
             }
@@ -49,8 +49,6 @@ export const reducer = (state: any, action: any) => {
             const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
             const choiceState = questionState.choice.find((choice: any, id: number) => id === action.cIdx)
             const newChoice = questionState.choice
-            console.log(newChoice, 'newChoice')
-            console.log(choiceState, 'choiceState')
             choiceState.title = action.choice
             newChoice[action.cIdx] = { title: choiceState.title, answer: choiceState.answer }
             return { ...state }
@@ -58,11 +56,24 @@ export const reducer = (state: any, action: any) => {
         case ACTIONS.CHOICE_BUTTON: {
             const newTitle = state.questions[action.qIdx].title
             const newChoice = state.questions[action.qIdx].choice
-            state.questions[action.qIdx] = {title: newTitle, choice:[...newChoice, {title:'', answer: false} ]}
-            console.log(state.questions[action.qIdx], 'question choice' ,action.qIdx)
+            state.questions[action.qIdx] = { title: newTitle, choice: [...newChoice, { title: '', answer: false }] }
+            console.log(state.questions[action.qIdx], 'question choice', action.qIdx)
             return {
                 ...state,
             }
+        }
+        case ACTIONS.ANSWER: {
+            const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
+            const choiceState = questionState.choice.find((question:any, id: number) => id === action.cIdx)
+            const newChoice = questionState.choice
+            newChoice[action.cIdx] =  {title: choiceState.title, answer: action.payload}
+            return { ...state, }
+        }
+        case ACTIONS.ANSWER_OPEN: {
+            return {...state, answerModal: true}
+        }
+        case ACTIONS.ANSWER_CLOSE: {
+            return {...state, answerModal: false}
         }
         default:
             return { ...state }

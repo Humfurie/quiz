@@ -14,7 +14,6 @@ import { reducer } from "../lib/reducers/reducer";
 
 export default function App({ Component, pageProps }: AppProps) {
 
-
   const test = useCallback(
     async () => {
       try {
@@ -91,7 +90,7 @@ export default function App({ Component, pageProps }: AppProps) {
       question: state.questions    
     })
   }
-
+  
   return (
     <>
     <FormContext.Provider value={{

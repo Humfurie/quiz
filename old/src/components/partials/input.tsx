@@ -1,10 +1,14 @@
-export const Input = ({type, className, onChange, value }: any) => {
+export const Input = ({type, className, onChange, value, questionKey, checked, defaultChecked }: any) => {
     return(
         <input 
+        key={questionKey}
+        id={questionKey}
         type={type}
         className={className}
         value={value}
         onChange={onChange}
+        checked={checked}
+        defaultChecked={defaultChecked}
          />
     )
 }

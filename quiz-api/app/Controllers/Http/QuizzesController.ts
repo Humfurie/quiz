@@ -57,7 +57,6 @@ export default class QuizzesController {
 
   public async show({ response }: HttpContextContract) { 
     const getQuiz = await Quiz.query().preload('question' , (q) => q.preload('choice'))
-    console.log(getQuiz)
     return response.status(200).json(getQuiz)
   }
 
