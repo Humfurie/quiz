@@ -57,23 +57,29 @@ export const reducer = (state: any, action: any) => {
             const newTitle = state.questions[action.qIdx].title
             const newChoice = state.questions[action.qIdx].choice
             state.questions[action.qIdx] = { title: newTitle, choice: [...newChoice, { title: '', answer: false }] }
-            console.log(state.questions[action.qIdx], 'question choice', action.qIdx)
             return {
                 ...state,
             }
         }
         case ACTIONS.ANSWER: {
             const questionState = state.questions.find((question: any, id: number) => id === action.qIdx)
-            const choiceState = questionState.choice.find((question:any, id: number) => id === action.cIdx)
+            const choiceState = questionState.choice.find((question: any, id: number) => id === action.cIdx)
             const newChoice = questionState.choice
-            newChoice[action.cIdx] =  {title: choiceState.title, answer: action.payload}
+            newChoice[action.cIdx] = { title: choiceState.title, answer: action.payload }
             return { ...state, }
         }
         case ACTIONS.ANSWER_OPEN: {
-            return {...state, answerModal: true}
+            return { ...state, answerModal: true, modal: action.payload }
         }
         case ACTIONS.ANSWER_CLOSE: {
-            return {...state, answerModal: false}
+            return { ...state, answerModal: false }
+        }
+        //Delete Actions
+        case ACTIONS.OPEN_DELETE: {
+            return { ...state, openDelete: true, deleteId: action.payload }
+        }
+        case ACTIONS.CLOSE_DELETE: {
+            return { ...state, openDelete: false }
         }
         default:
             return { ...state }

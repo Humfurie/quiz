@@ -64,5 +64,12 @@ export default class QuizzesController {
 
   public async update({ }: HttpContextContract) { }
 
-  public async destroy({ }: HttpContextContract) { }
+  public async destroy({ response, params }: HttpContextContract) {
+    console.log(params.id, params, 'params') 
+    const quiz = await Quiz.findOrFail(params.id)
+
+    await quiz.delete()
+
+    return response.status(200).json(quiz)
+  }
 }

@@ -10,14 +10,17 @@ export default class extends BaseSchema {
       .integer('examinee_id')
       .unsigned()
       .references('examinees.id')
+      .onDelete('CASCADE')
       table
       .integer('question_id')
       .unsigned()
       .references('questions.id')
+      .onDelete('CASCADE')
       table
       .integer('choice_id')
       .unsigned()
       .references('choices.id')
+      .onDelete('CASCADE')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

@@ -20,6 +20,7 @@ export default class extends BaseSchema {
       // table
       //   .foreign('quiz_id')
         .references('quizzes.id')
+        .onDelete('CASCADE')
       table.integer('score', 255)
 
 

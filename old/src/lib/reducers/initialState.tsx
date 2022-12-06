@@ -4,6 +4,9 @@ export const initialState = {
     registerModal: false,
     quizModal: false,
     answerModal: false,
+    openDelete: false,
+    deleteId: '',
+    modal: {},
     //state
     addQuiz: {
         title: '',

@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { ACTIONS } from "../../../lib/reducers/actions"
 import { FormContext } from "../../../lib/useContext/formContext"
 import { MyButton } from "../../partials/button"
-import { Input } from "../../partials/input"
+import { MyInput } from "../../partials/input"
 
 export const QuizForm = () => {
   const { state, dispatch, dataSubmit } = useContext(FormContext)
@@ -10,7 +10,7 @@ export const QuizForm = () => {
   return (
     <form onSubmit={dataSubmit}>
 
-      <Input value={state.addQuiz.title} onChange={(e: any) => {
+      <MyInput value={state.addQuiz.title} onChange={(e: any) => {
 
         dispatch({
           type: ACTIONS.ADD_QUIZ,
@@ -25,7 +25,7 @@ export const QuizForm = () => {
             <div key={qIdx}>
 
               question
-              <Input value={question.title} questionKey={qIdx} onChange={(e: any) => {
+              <MyInput value={question.title} questionKey={qIdx} onChange={(e: any) => {
                 dispatch({
                   type: ACTIONS.EDIT_QUESTION,
                   question: e.target.value,
@@ -43,7 +43,7 @@ export const QuizForm = () => {
                     choice
                   <div>
 
-                    <Input value={choice.title} onChange={(e: any) => {
+                    <MyInput value={choice.title} onChange={(e: any) => {
                       dispatch({
                         type: ACTIONS.EDIT_CHOICE,
                         choice: e.target.value,
@@ -51,7 +51,7 @@ export const QuizForm = () => {
                         qIdx: qIdx
                       })
                     }} />
-                    <Input type='checkbox' checked={choice.answer} onChange={(e:any) => {
+                    <MyInput type='checkbox' checked={choice.answer} onChange={(e:any) => {
                       dispatch({
                         type: ACTIONS.ANSWER,
                         qIdx: qIdx,

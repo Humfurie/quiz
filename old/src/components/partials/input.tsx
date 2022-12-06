@@ -1,4 +1,4 @@
-export const Input = ({type, className, onChange, value, questionKey, checked, defaultChecked }: any) => {
+export const MyInput = ({type, className, onChange, value, questionKey, checked, defaultChecked }: any) => {
     return(
         <input 
         key={questionKey}

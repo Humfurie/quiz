@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       .integer('quiz_id')
       .unsigned()
       .references('quizzes.id')
+      .onDelete('CASCADE')
       table.string('title', 255)
 
       /**
