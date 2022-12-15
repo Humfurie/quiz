@@ -1,14 +1,17 @@
 import { useContext } from "react"
 import { ACTIONS } from "../../../lib/reducers/actions"
 import { FormContext } from "../../../lib/useContext/formContext"
-import { MyButton } from "../../partials/button"
-import { MyInput } from "../../partials/input"
+import { MyButton } from "../../partials/MyButton"
+import { MyInput } from "../../partials/MyInput"
 
 export const QuizForm = () => {
   const { state, dispatch, dataSubmit } = useContext(FormContext)
-  
+  console.log(state.user, 'hehe')
   return (
-    <form onSubmit={dataSubmit}>
+    <form onSubmit={(e:any) => {
+      e.preventDefault()
+      dataSubmit()
+    }}>
 
       <MyInput value={state.addQuiz.title} onChange={(e: any) => {
 

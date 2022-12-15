@@ -81,6 +81,27 @@ export const reducer = (state: any, action: any) => {
         case ACTIONS.CLOSE_DELETE: {
             return { ...state, openDelete: false }
         }
+        case ACTIONS.ANSWER_CHECKBOX: {
+
+            let test = state.answerCheck
+            if (!state.answerCheck.length || !(state.answerCheck.find((item: any) => item.questionId === action.payload.questionId))) test.push(action.payload)
+            else {
+                test = state.answerCheck.map((item: any) => {
+                    if (item.questionId === action.payload.questionId) {
+                        item.choice = action.payload.choice
+                        item.userId = action.payload.userId
+                        
+                        return item
+                    }
+                    
+                    return item
+                })
+            }
+            console.log(test, 'test')
+
+
+            return { ...state, answerCheck: test }
+        }
         default:
             return { ...state }
     }

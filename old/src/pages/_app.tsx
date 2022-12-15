@@ -7,23 +7,25 @@ import { FormContext } from '../lib/useContext/formContext'
 import axios from "axios"
 import { useReducer, useState } from "react"
 import { setCookie } from 'nookies'
-
 import { initialState } from "../lib/reducers/initialState";
 import { reducer } from "../lib/reducers/reducer";
 
 
 export default function App({ Component, pageProps }: AppProps) {
 
+  const [currentUser, setCurrentUser] = useState(null)
   const test = useCallback(
     async () => {
       try {
-        await interceptor.get(`http://127.0.0.1:3333/auth`)
+        const res = await interceptor.get(`http://127.0.0.1:3333/auth`)
+        console.log('res.data', res.data.user)
+        setCurrentUser(res.data.user.id)
         Router.push('/')
       } catch (error) {
         Router.push('/landing')
       }
     }, [])
-
+   
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const [form, setForm] = useState({
@@ -88,8 +90,17 @@ export default function App({ Component, pageProps }: AppProps) {
       title: quizTitle,
       status: quizStatus,
       question: state.questions    
+    }).then(res => {
+      console.log(res, 'this is res')})
+  }
+
+  const answerSubmit = async () => {
+    await interceptor.post(`http://127.0.0.1:3333/answer`, {
+      answer: state.answerCheck
     })
   }
+  console.log('currentUser', currentUser)
+
   
   return (
     <>
@@ -101,6 +112,8 @@ export default function App({ Component, pageProps }: AppProps) {
         state,
         dispatch,
         dataSubmit,
+        answerSubmit,
+        currentUser,
       }}>
   <Component {...pageProps} />
   </FormContext.Provider>  

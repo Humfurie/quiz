@@ -1,10 +1,10 @@
 import { Table } from '@mantine/core';
-import axios from 'axios';
-import { useContext } from 'react';
-import { Answer } from '../components/options/answer';
-import Delete from '../components/options/delete';
-import { MyModal } from '../components/options/modal';
-import { MyButton } from '../components/partials/button';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { interceptor } from '../axios/axiosInterceptor';
+import { Answer } from '../components/options/Answer';
+import Delete from '../components/options/Delete';
+import { MyModal } from '../components/options/MyModal';
+import { MyButton } from '../components/partials/MyButton';
 import { QuizModal } from '../components/QuizModal/quizModal';
 import { ACTIONS } from '../lib/reducers/actions';
 import { FormContext } from '../lib/useContext/formContext';
@@ -12,6 +12,7 @@ import { FormContext } from '../lib/useContext/formContext';
 export default function Home({ quiz }: any) {
 
   const { dispatch } = useContext(FormContext)
+
   return (
     <>
       <div>
@@ -55,6 +56,7 @@ export default function Home({ quiz }: any) {
                       type: ACTIONS.OPEN_DELETE,
                       payload: quiz.id
                     })
+
                   }} /></div>
                 </td>
               </tr>
@@ -65,6 +67,7 @@ export default function Home({ quiz }: any) {
         {/* Modals */}
         <MyModal />
         <Delete />
+
       </div>
     </>
   )
@@ -72,7 +75,7 @@ export default function Home({ quiz }: any) {
 
 export const getServerSideProps = async () => {
 
-  const res = await axios.get(`http://127.0.0.1:3333/main`)
+  const res = await interceptor.get(`http://127.0.0.1:3333/main`)
   return {
     props: {
       quiz: res.data

@@ -2,7 +2,7 @@ import { Button, Group, Modal } from "@mantine/core";
 import { useContext } from "react";
 import { ACTIONS } from "../lib/reducers/actions";
 import { FormContext } from "../lib/useContext/formContext";
-import { LoginForm } from "./loginForm/loginForm";
+import { LoginForm } from "./loginForm/LoginForm";
 import { RegisterForm } from "./loginForm/RegisterForm";
 
 export const Login = () => {

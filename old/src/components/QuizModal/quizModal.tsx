@@ -3,7 +3,7 @@ import { Button, Modal, Group } from '@mantine/core';
 import { useContext } from 'react';
 import { ACTIONS } from '../../lib/reducers/actions';
 import { FormContext } from '../../lib/useContext/formContext';
-import { MyButton } from '../partials/button';
+import { MyButton } from '../partials/MyButton';
 import { QuizForm } from './QuizModalComp/quizForm';
 
 export const QuizModal = () => {
