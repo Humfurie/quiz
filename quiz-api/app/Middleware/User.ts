@@ -13,6 +13,8 @@ export default class User {
 
     const decode = jwt.verify(token, env.get('APP_SECRET'), {})
 
+    console.log(decode)
+
     request.user = decode
 
     } catch (error) {

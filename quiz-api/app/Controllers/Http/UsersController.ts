@@ -22,9 +22,9 @@ export default class UsersController {
 
 
     const user = await User.query().where('email', validated.email).first()
-    const tokenAuth = {
-      email: validated.email
-    }
+    // const tokenAuth = {
+    //   email: validated.email
+    // }
     // if (!user) {
     //   return response.status(401).json({ message: 'Unauthorized User!' })
     // }
@@ -34,7 +34,7 @@ export default class UsersController {
     // }
 
     try {
-      const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
+    //   const token = jwt.sign(tokenAuth, env.get('APP_SECRET'), { expiresIn: "30 mins" })
       // let jwtCookie = `JWT=${token}; Domain=${"localhost"};`
 
       // // if (request.input('remember')) {
@@ -44,7 +44,7 @@ export default class UsersController {
       await trx.commit()
 
       return response.status(200).send({
-        token: token,
+        // token: token,
         data: { ...user }
       })
     } catch {
@@ -59,7 +59,7 @@ export default class UsersController {
     const user = await User.query().where('email', email).first()
 
     const tokenAuth = {
-      email: user?.email
+      ...user?.serialize()
     }
     if (!user) {
       return response.status(401).json({ message: 'user not found' })
@@ -87,8 +87,8 @@ export default class UsersController {
   }
 
   public async invoke({ request, response }: HttpContextContract) {
-
-    return response.status(200).json({ user: request.user })
+    const user = await User.query().preload('examinee')
+    return response.status(200).json({ user: request.user, examinee: user })
   }
 
   public async edit({ }: HttpContextContract) { }
