@@ -1,7 +1,7 @@
 import { Button, Group, Modal } from "@mantine/core";
 import { useContext } from "react";
-import { ACTIONS } from "../lib/reducers/actions";
-import { FormContext } from "../lib/useContext/formContext";
+import { ACTIONS } from "../../lib/reducers/actions";
+import { FormContext } from "../../lib/useContext/formContext";
 import { LoginForm } from "./loginForm/LoginForm";
 import { RegisterForm } from "./loginForm/RegisterForm";
 
@@ -17,7 +17,7 @@ export const Login = () => {
           })
         }
         title="Login"
-        fullScreen
+        // className={}
       >
         <LoginForm />
         <Modal
@@ -27,7 +27,6 @@ export const Login = () => {
               type: ACTIONS.CLOSE_REGISTER_MODAL
             })}
           title="Register"
-          fullScreen
         >
           <RegisterForm />
         </Modal>

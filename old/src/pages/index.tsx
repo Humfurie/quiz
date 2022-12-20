@@ -1,10 +1,10 @@
 import { Table } from '@mantine/core';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {  useContext} from 'react';
 import { interceptor } from '../axios/axiosInterceptor';
 import { Answer } from '../components/options/Answer';
 import Delete from '../components/options/Delete';
 import { MyModal } from '../components/options/MyModal';
-import { MyButton } from '../components/partials/MyButton';
+import { MyButton } from '../lib/partials/MyButton';
 import { QuizModal } from '../components/QuizModal/quizModal';
 import { ACTIONS } from '../lib/reducers/actions';
 import { FormContext } from '../lib/useContext/formContext';

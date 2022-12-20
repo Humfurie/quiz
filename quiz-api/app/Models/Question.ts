@@ -4,6 +4,9 @@ import Choice from './Choice'
 import Answer from './Answer'
 
 export default class Question extends BaseModel {
+  query() {
+    throw new Error('Method not implemented.')
+  }
   @column({ isPrimary: true })
   public id: number
   

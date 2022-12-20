@@ -3,7 +3,7 @@ import { userAgent } from "next/server"
 import { useContext } from "react"
 import { ACTIONS } from "../../lib/reducers/actions"
 import { FormContext } from "../../lib/useContext/formContext"
-import { MyInput } from "../partials/MyInput"
+import { MyInput } from "../../lib/partials/MyInput"
 
 export const MyModal = () => {
     const { currentUser, state, dispatch, answerSubmit } = useContext(FormContext)

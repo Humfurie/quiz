@@ -17,4 +17,5 @@ export default class Answer extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+  length: number
 }

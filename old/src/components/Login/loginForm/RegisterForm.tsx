@@ -1,7 +1,7 @@
 import { useContext } from "react"
-import { FormContext } from "../../lib/useContext/formContext"
-import { MyButton } from "../partials/MyButton"
-import { MyInput } from "../partials/MyInput"
+import { FormContext } from "../../../lib/useContext/formContext"
+import { MyButton } from "../../../lib/partials/MyButton"
+import { MyInput } from "../../../lib/partials/MyInput"
 
 export const RegisterForm = () => {
     const { onSubmit, onChange } = useContext(FormContext)

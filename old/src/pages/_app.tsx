@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import "../styles/globals.css"
 import type { AppProps } from 'next/app'
 import { useCallback, useEffect, useMemo } from 'react'
 import { interceptor } from '../axios/axiosInterceptor'
@@ -19,28 +19,24 @@ export default function App({ Component, pageProps }: AppProps) {
       try {
         const res = await interceptor.get(`http://127.0.0.1:3333/auth`)
         setCurrentUser(res.data.user.id)
-        setCurrentExaminee(res.data)
-        
-        console.log(res, "userData")
+
         Router.push('/')
       } catch (error) {
         Router.push('/landing')
       }
     }, [])
 
-  const [currentUser, setCurrentUser] = useState([])
-  const [currentExaminee, setCurrentExaminee] = useState([])
-  console.log(currentExaminee)
+  const [currentUser, setCurrentUser] = useState({})
   const [state, dispatch] = useReducer(reducer, initialState)
-
-  const [form, setForm] = useState({
+  console.log("userData", currentUser)
+  const [registrationForm, setRegistrationForm] = useState({
     fullname: '',
     email: '',
     password: '',
   })
 
   const onChange = (value: any, column: string) => {
-    setForm(prev => {
+    setRegistrationForm(prev => {
       return { ...prev, [column]: value }
     })
   }
@@ -48,9 +44,9 @@ export default function App({ Component, pageProps }: AppProps) {
   const onSubmit = async () => {
 
     await axios.post(`http://127.0.0.1:3333/registration`, {
-      fullname: form.fullname,
-      email: form.email,
-      password: form.password,
+      fullname: registrationForm.fullname,
+      email: registrationForm.email,
+      password: registrationForm.password,
     })
     location.reload()
   }
@@ -99,9 +95,6 @@ export default function App({ Component, pageProps }: AppProps) {
       answer: state.answerCheck
     })
   }
-  console.log('currentUser', currentUser)
-
-
 
 
   return (

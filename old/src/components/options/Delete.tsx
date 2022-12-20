@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { ACTIONS } from "../../lib/reducers/actions";
 import { FormContext } from "../../lib/useContext/formContext";
-import { MyButton } from "../partials/MyButton";
+import { MyButton } from "../../lib/partials/MyButton";
 import Router from "next/router";
 
 const Delete = ({ newId }: any) => {

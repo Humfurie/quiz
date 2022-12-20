@@ -21,43 +21,40 @@ export default class QuizzesController {
     const trx = await Database.transaction()
 
     try {
-      const quiz = await Quiz.create({
-        title: title,
-        status
-      }, { client: trx })
 
-      await quiz.related('question').updateOrCreateMany(questions, 'title')
+      const quiz = new Quiz()
+      quiz.title = title
+      quiz.status = status
+      quiz.useTransaction(trx)
+      await quiz.save()
+    
+      let questionIndex = 0
+      while (questionIndex < questions.length) {
+        const question = new Question()
+        question.quizId = quiz.id
+        question.title = questions[questionIndex].title
+        question.useTransaction(trx)
+        await question.save()
+        
+        let choiceIndex = 0
+        while (choiceIndex < questions[questionIndex].choice.length) {
+          const choice = new Choice()
+          choice.questionId = question.id
+          choice.title = questions[questionIndex].choice[choiceIndex].title
+          choice.useTransaction(trx)
+          await choice.save()
 
-      await quiz.load('question')
-
-
-      const serializedQuiz = quiz.serialize()
-
-      const savedQuestions = serializedQuiz.question
-
-      let index = 0
-
-      while (index < savedQuestions.length) {
-
-        const queryQuestion = await Question.query({ client: trx }).where({ id: savedQuestions[index].id }).first()
-        console.log(queryQuestion?.serialize(), savedQuestions[index].id)
-        if (!queryQuestion) throw new Error('kjahdkjasd')
-
-        await queryQuestion.related('choice').updateOrCreateMany(questions[index].choice, 'title')
-
-        await queryQuestion.load('choice')
-
-        const serializedQuestion = queryQuestion.serialize()
-
-        const savedChoices = serializedQuestion.choice
-
-        const correctAnswer = savedChoices.find((_: any, idx: number) => questions[index].choice[idx].answer)
-
-        if (correctAnswer) {
-          await queryQuestion.related('answer').create({ questionId: savedQuestions[index].id, choiceId: correctAnswer.id })
+          let correctAnswer = questions[questionIndex].choice[choiceIndex].answer
+          if(correctAnswer === true){
+            const answer = new Answer()
+            answer.questionId = question.id
+            answer.choiceId = choice.id
+            answer.useTransaction(trx)
+            await answer.save()
+          }
+          choiceIndex++
         }
-
-        index++
+        questionIndex++
       }
 
       const res = await Quiz.query().preload('question', (q) => q.preload('choice', (c) => c.preload('answer')))
@@ -77,21 +74,6 @@ export default class QuizzesController {
     return response.status(200).json(getQuiz)
   }
 
-  public async answer({ request, response }: HttpContextContract) {
-    // const answer = request.body().answer
-    // const choices = answer.map((answerChoice: any) => {
-    //   return {
-    //     choice: answerChoice.choice,
-    //     question: answerChoice.questionId
-    //   }
-    // })
-
-    // console.log(choices, 'choices')
-    // const getQuiz = await Quiz.query().preload('question' , (q) => q.preload('choice'))
-
-
-    return response.status(200)
-  }
 
   public async update({ }: HttpContextContract) { }
 
