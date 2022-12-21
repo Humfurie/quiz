@@ -5,8 +5,9 @@ import { ACTIONS } from "../../lib/reducers/actions";
 import { FormContext } from "../../lib/useContext/formContext";
 import { MyButton } from "../../lib/partials/MyButton";
 import Router from "next/router";
+import { styles } from "../../styles/style";
 
-const Delete = ({ newId }: any) => {
+const Delete = () => {
 
     const { state, dispatch } = useContext(FormContext)
 
@@ -24,11 +25,17 @@ const Delete = ({ newId }: any) => {
                 onClose={() => dispatch({
                     type: ACTIONS.CLOSE_DELETE,
                 })}
+                title="Delete"
+    
             >
-                {/* Modal content */}
+                <div className={styles.div.center}>
+                Are you sure You want to delete?
                 <MyButton type='button' label="delete" onClick={(e: any) => {
                     onDelete()
-                }} />
+                }}
+                className={styles.Login.formButton}
+                />
+                </div>
             </Modal>
 
         </div>

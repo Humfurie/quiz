@@ -8,7 +8,7 @@ export const LoginForm = () => {
 const { loginOnSubmit, loginOnchange} = useContext(FormContext)
 
     return (
-        <div>
+        <div className={styles.Login.forminDiv}>
 <form onSubmit={e => {
           e.preventDefault()
           loginOnSubmit()

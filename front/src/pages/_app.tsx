@@ -6,9 +6,10 @@ import Router from 'next/router'
 import { FormContext } from '../lib/useContext/formContext'
 import axios from "axios"
 import { useReducer, useState } from "react"
-import { setCookie } from 'nookies'
+import { destroyCookie, setCookie } from 'nookies'
 import { initialState } from "../lib/reducers/initialState";
 import { reducer } from "../lib/reducers/reducer";
+import { ACTIONS } from "../lib/reducers/actions"
 
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -48,7 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
       email: registrationForm.email,
       password: registrationForm.password,
     })
-    location.reload()
+    Router.reload()
   }
 
   const [loginForm, setLoginForm] = useState({
@@ -73,7 +74,7 @@ export default function App({ Component, pageProps }: AppProps) {
         maxAge: 30 * 24 * 60 * 60,
       })
     })
-    location.reload()
+    Router.reload()
   }
 
 
@@ -92,14 +93,26 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const answerSubmit = async () => {
     await interceptor.post(`http://127.0.0.1:3333/answer`, {
-      answer: state.answerCheck
+      answer: state.answerCheck,   
+      userId: currentUser,
+      quizId: state.modal.id
     })
+    dispatch({
+      type: ACTIONS.ANSWER_CLOSE
+    })
+    state.answerCheck = []
   }
+  console.log("state.modal", state.modal)
+  console.log("answer.check", state.answerCheck)
 
-
+  //delete Cookies
+  const deleteCookies = () => {
+    destroyCookie({}, 'JWTtoken')
+  }
   return (
     <>
       <FormContext.Provider value={{
+        deleteCookies,
         onChange,
         onSubmit,
         loginOnSubmit,

@@ -8,6 +8,8 @@ import Response from 'App/Models/Response'
 export default class ExamineesController {
   public async create({ request, response }: HttpContextContract) {
     const answer = await request.body().answer
+    const userId = await request.body().userId
+    const quizId = await request.body().quizId
 
     const trx = await Database.transaction()
     try {
@@ -18,64 +20,37 @@ export default class ExamineesController {
       let count = 0
       
       while(countIndex < answer.length){
-        
-        const correctAnswer = await Answer.query().whereIn(['questionId', 'choiceId'], [[answer[countIndex].questionId, answer[countIndex].choiceId]])
+        const correctAnswer = await Answer.query({client:trx}).where('questionId', answer[countIndex].questionId).andWhere('choiceId', answer[countIndex].choiceId)
+      
         console.log(correctAnswer.length)
-        // .where('questionId', answer[countIndex].questionId).orWhere('choiceId', answer[countIndex].choiceId).count('id')
-
+        if(correctAnswer.length > 0){
+          count++
+        }
 
         countIndex++
       }
        console.log(countIndex)
        console.log(count)
       
+
+       const examinee = new Examinee()
+       examinee.userId = userId
+       examinee.quizId = quizId
+       examinee.score = count
+       examinee.useTransaction(trx)
+       await examinee.save()
+
       let answerIndex = 0
       while(answerIndex < answer.length){
-
-        const examinee = new Examinee()
-        examinee.userId = answer[answerIndex].userId
-        examinee.quizId = answer[answerIndex].quizId
-        examinee.score = count
-        examinee.useTransaction(trx)
-        // await examinee.save()
+        const responses = new Response()
+        responses.examineeId = examinee.id
+        responses.questionId = answer[answerIndex].questionId
+        responses.choiceId = answer[answerIndex].choiceId
+        responses.useTransaction(trx)
+        await responses.save()
 
         answerIndex++
       }
-        
-
-      // const examinee = answer.map(async (value: { userId: number, quizId: number, questionId: number, choiceId: number }, id: number) => {
-      //   const savedAnswer = Answer.query({ client: trx }).where('questionId', value.questionId).first()
-      //   let index = 0
-      //   while (index < )
-
-      //     return {
-      //       userId: value.userId,
-      //       quizId: value.quizId,
-      //       score: 
-      //     }
-      // })
-      // const createExaminee = await Examinee.createMany(examinee, { client: trx })
-      // const savedExaminee = createExaminee.map((examinee: { id: number, userId: number, quizId: number }, _: number) => {
-      //   return {
-      //     id: examinee.id,
-      //     // userId: examinee.userId,
-      //     // quizId: examinee.quizId
-      //   }
-      // })
-
-      // const examineeResponse = answer.map((value: { choiceId: number, questionId: number }, id: number) => {
-      //   let index = 0
-      //   while (index < savedExaminee.length) {
-
-      //     return {
-      //       examineeId: savedExaminee[index].id,
-      //       questionId: value.questionId,
-      //       choiceId: value.choiceId
-      //     }
-      //   }
-      // })
-      // console.log(examineeResponse, "haw")
-      // await Response.createMany(examineeResponse, { client: trx })
 
       await trx.commit()
 

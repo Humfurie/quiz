@@ -5,6 +5,7 @@ import { ACTIONS } from '../../lib/reducers/actions';
 import { FormContext } from '../../lib/useContext/formContext';
 import { MyButton } from '../../lib/partials/MyButton';
 import { QuizForm } from './QuizModalComp/quizForm';
+import { styles } from '../../styles/style';
 
 export const QuizModal = () => {
   const { state, dispatch } = useContext(FormContext)
@@ -19,6 +20,8 @@ export const QuizModal = () => {
             type: ACTIONS.CLOSE_QUIZ_MODAL
           })
         }
+        size="xl"
+        overflow="inside"
         title="Question"
       >
         {/* Modal content */}
@@ -32,19 +35,24 @@ export const QuizModal = () => {
             dispatch({
               type: ACTIONS.INITIAL_QUESTION
             })
-          }} />
+          }}
+          className={styles.Login.formButton} 
+          />
           </div>
 
         </div>
       </Modal>
-
-      <Group position="center">
-        <Button onClick={() =>
+          <div className='flex justify-end'>
+        <MyButton onClick={() =>
           dispatch({
             type: ACTIONS.OPEN_QUIZ_MODAL
           })
-        }>Open Modal</Button>
-      </Group>
+        }
+        className={styles.Login.formButton}
+        label="Add Quiz" 
+        />
+        </div>
+
     </>
   )
 }

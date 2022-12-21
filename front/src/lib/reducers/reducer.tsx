@@ -72,7 +72,7 @@ export const reducer = (state: any, action: any) => {
             return { ...state, answerModal: true, modal: action.payload }
         }
         case ACTIONS.ANSWER_CLOSE: {
-            return { ...state, answerModal: false }
+            return { ...state, answerModal: false, modal: {} }
         }
         //Delete Actions
         case ACTIONS.OPEN_DELETE: {
@@ -89,7 +89,6 @@ export const reducer = (state: any, action: any) => {
                 test = state.answerCheck.map((item: any) => {
                     if (item.questionId === action.payload.questionId) {
                         item.choice = action.payload.choice
-                        item.userId = action.payload.userId
                         
                         return item
                     }
@@ -97,8 +96,6 @@ export const reducer = (state: any, action: any) => {
                     return item
                 })
             }
-            console.log(test, 'test')
-
 
             return { ...state, answerCheck: test }
         }

@@ -1,23 +1,30 @@
-import { Button, Group, Modal } from "@mantine/core";
+import { Button, ColorPicker, ColorSchemeProvider, Group, Modal, useMantineTheme } from "@mantine/core";
 import { useContext } from "react";
 import { ACTIONS } from "../../lib/reducers/actions";
 import { FormContext } from "../../lib/useContext/formContext";
 import { LoginForm } from "./loginForm/LoginForm";
 import { RegisterForm } from "./loginForm/RegisterForm";
+import { styles } from "../../styles/style";
+import { getColorValue } from "@mantine/core/lib/Box/style-system-props/value-getters/get-color-value";
 
 export const Login = () => {
   const { state, dispatch } = useContext(FormContext)
+
   return (
     <div >
       <Modal
         opened={state.loginModal}
-        onClose={() =>
+        onClose={() => {
           dispatch({
             type: ACTIONS.CLOSE_LOGIN_MODAL
           })
         }
+        }
+        shadow="md" radius="md"
         title="Login"
-        // className={}
+        transition="fade"
+        transitionDuration={600}
+        transitionTimingFunction="ease"
       >
         <LoginForm />
         <Modal
@@ -27,12 +34,16 @@ export const Login = () => {
               type: ACTIONS.CLOSE_REGISTER_MODAL
             })}
           title="Register"
+          shadow="md" radius="md"
+          transition="fade"
+          transitionDuration={600}
+          transitionTimingFunction="ease"
         >
           <RegisterForm />
         </Modal>
 
         <Group position="center">
-          <Button onClick={() =>
+          <Button className={styles.Login.formButton} onClick={() =>
             dispatch({
               type: ACTIONS.OPEN_REGISTER_MODAL
             })
@@ -41,7 +52,7 @@ export const Login = () => {
       </Modal>
 
       <Group position="center">
-        <Button onClick={() =>
+        <Button className={styles.Login.formButton} onClick={() =>
           dispatch({
             type: ACTIONS.OPEN_LOGIN_MODAL
           })

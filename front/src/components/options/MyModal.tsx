@@ -7,7 +7,6 @@ import { MyInput } from "../../lib/partials/MyInput"
 
 export const MyModal = () => {
     const { currentUser, state, dispatch, answerSubmit } = useContext(FormContext)
-    console.log(state.modal, 'answerModal')
     const rows = (
         <>
             {state.modal.title}
@@ -23,10 +22,8 @@ export const MyModal = () => {
                                     dispatch({
                                         type: ACTIONS.ANSWER_CHECKBOX,
                                         payload: {
-                                            choiceId: choice.id, 
                                             questionId: question.id,
-                                            userId: currentUser,
-                                            quizId: state.modal.id
+                                            choiceId: choice.id,
                                         },
                                         id: idx
                                     })
