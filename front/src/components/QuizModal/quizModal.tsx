@@ -22,12 +22,12 @@ export const QuizModal = () => {
         }
         size="xl"
         overflow="inside"
-        title="Question"
+        title="QUIZ"
       >
         {/* Modal content */}
         <div>
           <div>
-              quiz            
+                       
               <QuizForm />
           </div>
           <div>

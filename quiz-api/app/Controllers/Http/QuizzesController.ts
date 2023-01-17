@@ -7,7 +7,7 @@ import Quiz from 'App/Models/Quiz'
 
 export default class QuizzesController {
   public async index({ response }: HttpContextContract) {
-    const quizzes = await Quiz.query().preload('question', (q) => q.preload('choice'))
+    const quizzes = await Quiz.query().preload('question', (q) => q.preload('choice')).preload('examinee', (q) => q.preload('response'))
     return response.status(200).json(quizzes)
   }
 

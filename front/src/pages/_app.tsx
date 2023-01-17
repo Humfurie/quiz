@@ -2,7 +2,7 @@ import "../styles/globals.css"
 import type { AppProps } from 'next/app'
 import { useCallback, useEffect, useMemo } from 'react'
 import { interceptor } from '../axios/axiosInterceptor'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { FormContext } from '../lib/useContext/formContext'
 import axios from "axios"
 import { useReducer, useState } from "react"
@@ -13,23 +13,26 @@ import { ACTIONS } from "../lib/reducers/actions"
 
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
 
-
-  useMemo(
+  const test = useCallback(
     async () => {
       try {
         const res = await interceptor.get(`http://127.0.0.1:3333/auth`)
         setCurrentUser(res.data.user.id)
 
-        Router.push('/')
+        router.push('/')
       } catch (error) {
-        Router.push('/landing')
+        router.push('/landing')
       }
     }, [])
 
-  const [currentUser, setCurrentUser] = useState({})
+  useEffect(() => {
+    test()
+  }, [test])
+
+  const [currentUser, setCurrentUser] = useState(null)
   const [state, dispatch] = useReducer(reducer, initialState)
-  console.log("userData", currentUser)
   const [registrationForm, setRegistrationForm] = useState({
     fullname: '',
     email: '',
@@ -49,7 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
       email: registrationForm.email,
       password: registrationForm.password,
     })
-    Router.reload()
+    router.push('/')
   }
 
   const [loginForm, setLoginForm] = useState({
@@ -68,13 +71,15 @@ export default function App({ Component, pageProps }: AppProps) {
       email: loginForm.email,
       password: loginForm.password,
     }).then(res => {
-      console.log(res)
       const token = res.data.token
       setCookie({}, 'JWTtoken', token, {
         maxAge: 30 * 24 * 60 * 60,
       })
     })
-    Router.reload()
+
+    await test()
+
+    router.push('/')
   }
 
 
@@ -93,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const answerSubmit = async () => {
     await interceptor.post(`http://127.0.0.1:3333/answer`, {
-      answer: state.answerCheck,   
+      answer: state.answerCheck,
       userId: currentUser,
       quizId: state.modal.id
     })
@@ -102,9 +107,7 @@ export default function App({ Component, pageProps }: AppProps) {
     })
     state.answerCheck = []
   }
-  console.log("state.modal", state.modal)
-  console.log("answer.check", state.answerCheck)
-
+  console.log('currentUser', currentUser)
   //delete Cookies
   const deleteCookies = () => {
     destroyCookie({}, 'JWTtoken')
@@ -122,6 +125,7 @@ export default function App({ Component, pageProps }: AppProps) {
         dataSubmit,
         answerSubmit,
         currentUser,
+        test
       }}>
         <Component {...pageProps} />
       </FormContext.Provider>
